@@ -7,7 +7,7 @@ gem "sprockets-rails"
 # Use mysql as the database for Active Record
 # gem "mysql2", "~> 0.5"
 
-gem 'sqlite3', '~> 1.3', '>= 1.3.11'
+gem 'sqlite3', '~> 2.0'
 gem 'faker'
 gem "searchkick"
 gem "elasticsearch"

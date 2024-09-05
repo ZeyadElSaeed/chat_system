@@ -29,6 +29,7 @@ This project marks several new milestones for me:
 - **elasticsearch**: ElasticSearch client for Ruby.
 - **sidekiq**: For background job processing.
 - **mysql2**: MySQL database adapter for Ruby.
+- **foreman**: Manage Procfile-based applications.
 
 
 ## Characteristics
@@ -38,6 +39,7 @@ This project marks several new milestones for me:
 - **Asynchronous Processing**: Uses Redis and Sidekiq for handling background jobs, such as creating applicatios, chats and messages and editing applications and messages. In addition to a background job to reindex the Message model after craeting and updating.
 - **Optimized Performance**: Designed to minimize direct MySQL queries during request handling by using background jobs for async operations and using appropriate indexing for improved performance.
 - **Containerized Deployment**: The entire application stack can be deployed using Docker and Docker Compose with a single command: `docker-compose up`.
+- **Dummy Data**: Upon intializing the app server, dummy data is loaded to create 3 applications with their associated chats and messsages using `faker`.
 
 # Project Setup and Build Instructions
 
@@ -64,6 +66,20 @@ After building the images, start the containers with:
 ```bash
   docker-compose up
 ```
+#### Important Notes
+- starting the server can take time up to 2 minutes as each time it makes sure that database is created, tables are migrated and seed is run to initalize dummy data and reindexing the messages is done.
+```bash
+  bundle exec rails db:create
+  bundle exec rails db:migrate
+  bundle exec rails db:seed
+  bundle exec rails runner "Message.reindex"
+```
+
+- foreman is used to run two services on app server on two different ports web: 5000 and worker: 3000. The foreman commands in Procfile in root directory
+  ```bash
+  foreman start
+  ```
+
 ### 3. Access the Application
 Rails Application: By default, the Rails application will be available at
 ```bash

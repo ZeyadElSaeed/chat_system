@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
     chat_number = params[:chat_number]
     messages = Message.find_by_token_chat_number(token, chat_number)
     if messages.any?
-      render json: messages, status: :ok
+      render json: messages.as_json(only: [:number, :body]), status: :ok
     else
       render json: {error: "No messages found for application token: #{token} and chat_number: #{chat_number}"}, status: :not_found
     end
@@ -35,13 +35,14 @@ class MessagesController < ApplicationController
     message_number = params[:message_number]
     message = Message.find_by_token_chat_number_message_number(token, chat_number, message_number)
     if message
-      render json: message, status: :ok
+      render json: message.as_json(only: [:number, :body]), status: :ok
     else
       render json: {error: "No messages found for application token: #{token} and chat: #{chat_number} and message: #{message_number}"}, status: :not_found
     end
   end
 
   def update
+    begin
     token = params[:application_token]
     chat_number = params[:chat_number]
     message_number = params[:message_number]
@@ -52,15 +53,18 @@ class MessagesController < ApplicationController
     else
       render json: { error: "Message not found with number #{params[:message_number]} in chat #{params[:chat_number]}" }, status: :not_found
     end
+    rescue ActionController::ParameterMissing
+      render json: { error: "Message parameters (body) are missing",status: :unprocessable_entity  }, status: :unprocessable_entity
+    end
+
   end
 
   def search
     query = params[:query]
-    results = Message.search(query, where: {chat_id: @chat.id}, fields: [:body], match: :word_middle) # Message.search(query, fields: [:body])
+    results = Message.search(query, where: {chat_id: @chat.id}, fields: [:body], match: :word_middle)
     if results.present?
       formatted_results = results.map do |result|
         {
-          chat_id: result.chat_id,
           number: result.number,
           body: result.body
         }
@@ -69,11 +73,6 @@ class MessagesController < ApplicationController
     else
       render json: { error: 'No results found' }, status: :not_found
     end
-
-
-    # query = params[:query]
-    # results = Message.search(query, where: { chat_id: params[:chat_number] }, fields: [:body])
-    # render json: results 
   end
   
   private

@@ -67,6 +67,15 @@ After building the images, start the containers with:
   docker-compose up
 ```
 #### Important Notes
+- MySQL volume is not persisted. If you deleted the container, all the data will be removed. You can change that by uncommenting volume options in docker-compose.yml file.
+```bash
+services:
+  mysql:
+    volumes:
+      - mysql_data:/var/lib/mysql
+volumes:
+  mysql_data:
+```
 - starting the server can take time up to 2 minutes as each time it makes sure that database is created, tables are migrated and seed is run to initalize dummy data and reindexing the messages is done.
 ```bash
   bundle exec rails db:create

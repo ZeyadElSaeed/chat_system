@@ -31,7 +31,7 @@ class ApplicationsController < ApplicationController
       application = Application.find_by_token(params[:token])
       if application
         UpdateApplicationJob.perform_later(application, name)
-        render json: {message: "Application is being editing", token: application.token, name: name}, status: :ok
+        render json: {token: application.token, name: name}, status: :ok
       else
         render json: {error: "Failed to edit application. Perhaps not existing token: #{params[:token]}"}, status: :unprocessable_entity
       end

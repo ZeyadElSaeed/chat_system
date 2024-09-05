@@ -4,7 +4,7 @@ class ChatsController < ApplicationController
   def index
     chats = Chat.find_by_token(params[:application_token])
     if chats.any?
-      render json: chats, status: :ok
+      render json: chats.as_json(only: [:number, :messages_count]), status: :ok
     else
       render json: {error: "No chats found for application token: #{params[:application_token]}"}, status: :not_found
     end
@@ -16,7 +16,7 @@ class ChatsController < ApplicationController
     chat_number = params[:number]
     chats = Chat.find_by_token_chat_number(token, chat_number)
     if chats
-      render json: chats, status: :ok
+      render json: chats.as_json(only: [:number, :messages_count]), status: :ok
     else
       render json: {error: "No chat found for application token: #{params[:application_token]} and number: #{params[:number]}"}, status: :not_found
     end

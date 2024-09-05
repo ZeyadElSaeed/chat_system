@@ -99,7 +99,7 @@ Rails Application: By default, the Rails application will be available at
 ### Create Application
 - **Endpoint**: `POST /applications`
 - **Description**: Creates a new application with a unique token.
-- **Request**:
+- **Request body**:
     - `name`: Name of the application.
 - **Response**:
   - **200 OK**: Returns the following fields:
@@ -116,12 +116,12 @@ Rails Application: By default, the Rails application will be available at
 ### Update Application
 - **Endpoint**: `PATCH /applications/:token` or `PUT /applications/:token`
 - **Description**: Updates the name of an existing application.
-- **Request **:
+- **Request body**:
     - `name`: Updated Application Name.
 - **Response**:
   - **200 OK**: Indicates that the application update is being processed. Returns the token and new name.
     - `token`: Unique identifier of the application.
-    - `name`: Name of the application.
+    - `name`: Edied name of the application.
   - **404 Not Found**: If no applications are found.
 - **Example Response**:
   ```json
@@ -135,8 +135,6 @@ Rails Application: By default, the Rails application will be available at
 ### Show Application
 - **Endpoint**: `GET /applications/:token`
 - **Description**: Retrieves details of a specific application by its token.
-- **Request **:
-    - `name`: Updated Application Name.
 - **Response**:
   - **200 OK**: Returns the application details:
     - `token`: Unique identifier of the application.
@@ -157,22 +155,18 @@ Rails Application: By default, the Rails application will be available at
 ### List Chats
 - **Endpoint**: `GET /applications/:application_token/chats`
 - **Description**: Retrieves a list of chats for a specific application by its token.
-- **Request**:
-    - `application_token`: Token of the application (String).
 - **Response**:
   - **200 OK**: Returns a list of chats.
     - **Example Response**:
       ```json
       [
         {
-          "id": 1,
           "number": 1,
-          "application_id": 1
+          "messages_count": 12
         },
         {
-          "id": 2,
           "number": 2,
-          "application_id": 1
+          "messages_count": 14
         }
       ]
       ```
@@ -187,9 +181,6 @@ Rails Application: By default, the Rails application will be available at
 ### Show Chat
 - **Endpoint**: `GET /applications/:application_token/chats/:chat_number`
 - **Description**: Retrieves a specific chat by application token and chat number.
-- **Request**:
-    - `application_token`: Token of the application (String).
-    - `chat_number`: Number of the chat (Integer).
 - **Response**:
   - **200 OK**: Returns the details of the chat.
     - **Example Response**:
@@ -197,7 +188,7 @@ Rails Application: By default, the Rails application will be available at
       {
         "id": 1,
         "number": 1,
-        "application_id": 1
+        "messages_count": 16
       }
       ```
   - **404 Not Found**: If no chat is found for the given application token and chat number.
@@ -211,8 +202,6 @@ Rails Application: By default, the Rails application will be available at
 ### Create Chat
 - **Endpoint**: `POST /applications/:application_token/chats`
 - **Description**: Creates a new chat for a specific application.
-- **Request**:
-    - `application_token`: Token of the application (String).
 - **Response**:
   - **201 Created**: Returns the new chat number.
     - **Example Response**:
@@ -242,12 +231,10 @@ Rails Application: By default, the Rails application will be available at
         {
           "number": 1,
           "body": "Hello world",
-          "chat_id": 1
         },
         {
           "number": 2,
           "body": "Another message",
-          "chat_id": 1
         }
       ]
       ```
@@ -269,7 +256,6 @@ Rails Application: By default, the Rails application will be available at
       {
         "number": 1,
         "body": "Hello world",
-        "chat_id": 1
       }
       ```
   - **404 Not Found**: If no message is found for the given application token, chat number, and message number.
@@ -311,7 +297,7 @@ Rails Application: By default, the Rails application will be available at
       ```
 
 ### Update Message
-- **Endpoint**: `PATCH /applications/:application_token/chats/:chat_number/messages/:message_number`
+- **Endpoint**: `PATCH-PUT /applications/:application_token/chats/:chat_number/messages/:message_number`
 - **Description**: Updates an existing message within a specific chat.
 - **Request**:
     - **Body**:
@@ -344,12 +330,10 @@ Rails Application: By default, the Rails application will be available at
       ```json
       [
         {
-          "chat_id": 1,
           "number": 1,
           "body": "Search result"
         },
         {
-          "chat_id": 1,
           "number": 2,
           "body": "Another search result"
         }

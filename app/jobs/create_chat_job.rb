@@ -12,6 +12,6 @@ class CreateChatJob < ApplicationJob
   end
 
   def sidekiq_retries_exhausted
-    Rails.logger.error("Application creation failed after retries: #{arguments}")
+    Rails.logger.error("Chat creation failed after retries: #{arguments}")
   end
 end

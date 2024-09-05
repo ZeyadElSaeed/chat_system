@@ -80,28 +80,48 @@ FROM ruby:3.3.4
 # Set working directory
 WORKDIR /app
 
+# RUN apt-get update -qq && \
+#     apt-get install --no-install-recommends -y curl default-mysql-client libjemalloc2 libvips && \
+#     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# # Install packages needed to build gems
+# RUN apt-get update -qq && \
+#     apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git pkg-config && \
+#     rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl default-mysql-client libjemalloc2 libvips && \
+    apt-get install --no-install-recommends -y \
+    curl \
+    default-mysql-client \
+    libjemalloc2 \
+    libvips \
+    build-essential \
+    default-libmysqlclient-dev \
+    git \
+    pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Install packages needed to build gems
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential default-libmysqlclient-dev git pkg-config && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 
 # Copy Gemfile and Gemfile.lock to the container
 COPY Gemfile Gemfile.lock ./
 
-# RUN gem install bundler
 # Install gems
-RUN bundle install --verbose
+RUN gem install bundler
+RUN gem install foreman
+RUN gem install mysql2
+
+
+RUN MAKE="make --jobs 8" bundle install --verbose
 
 # Copy the rest of the application code
 COPY . .
+
+# Make the startup script executable
+RUN chmod +x /app/startup.sh
 
 # Expose port
 EXPOSE 3000
 
 # Start Rails server
-CMD ["rails", "server", "-b", "0.0.0.0"]
+# CMD ["rails", "server", "-b", "0.0.0.0"]

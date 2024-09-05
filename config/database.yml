@@ -53,20 +53,47 @@
 #   database: chat_system_production
 #   username: chat_system
 #   password: <%= ENV["CHAT_SYSTEM_DATABASE_PASSWORD"] %>
+
+
+# default: &default
+#   adapter: sqlite3
+#   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+#   timeout: 5000
+
+# development:
+#   <<: *default
+#   database: db/development.sqlite3
+
+# test:
+#   <<: *default
+#   database: db/test.sqlite3
+
+# production:
+#   <<: *default
+#   database: db/production.sqlite3
+
+
 default: &default
-  adapter: sqlite3
+  adapter: mysql2
+  encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
+  username: <%= ENV.fetch("MYSQL_USER") { "user" } %>
+  password: <%= ENV.fetch("MYSQL_PASSWORD") { "pass" } %>
+  host: <%= ENV.fetch("MYSQL_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("MYSQL_PORT") { 3306 } %>
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: chat_system_development
 
 test:
   <<: *default
-  database: db/test.sqlite3
+  database: chat_system_test
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: chat_system_production
+  username: <%= ENV.fetch("CHAT_SYSTEM_DATABASE_USER") { "user" } %>
+  password: <%= ENV.fetch("CHAT_SYSTEM_DATABASE_PASSWORD") %>
+
 

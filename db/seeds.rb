@@ -33,7 +33,8 @@ Message.destroy_all
     20.times do |k|
       chat.messages.create!(
         number: k + 1,
-        body: Faker::Lorem.sentence(word_count: 5)
+        body: Faker::Quote.famous_last_words
+        # body: Faker::Lorem.sentence(word_count: 5)
       )
     end
 

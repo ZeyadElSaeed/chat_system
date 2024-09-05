@@ -5,9 +5,9 @@ gem "rails", "~> 7.2.1"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 # Use mysql as the database for Active Record
-# gem "mysql2", "~> 0.5"
 
-gem 'sqlite3', '~> 1.3', '>= 1.3.11'
+gem "mysql2", "~> 0.5"
+# gem 'sqlite3', '~> 1.3', '>= 1.3.11'
 gem 'faker'
 gem "searchkick"
 gem "elasticsearch"

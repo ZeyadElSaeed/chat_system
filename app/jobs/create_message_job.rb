@@ -7,6 +7,7 @@ class CreateMessageJob < ApplicationJob
     message.number = chat.messages_count + 1
     if message.save
       Rails.logger.info("Message created successfully: #{message}")
+      ReindexMessagesJob.perform_later
     else
       Rails.logger.error("Failed to create message for chat: #{chat}")
     end

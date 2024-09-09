@@ -107,12 +107,7 @@ RUN apt-get update -qq && \
 COPY Gemfile Gemfile.lock ./
 
 # Install gems
-RUN gem install bundler
-RUN gem install foreman
-RUN gem install mysql2
-
-
-RUN MAKE="make --jobs 8" bundle install --verbose
+RUN gem install bundler foreman mysql2 && MAKE="make --jobs 8" bundle install --verbose
 
 # Copy the rest of the application code
 COPY . .
@@ -123,5 +118,6 @@ RUN chmod +x /app/startup.sh
 # Expose port
 EXPOSE 3000
 
-# Start Rails server
+CMD ["bash", "/app/startup.sh"]
+
 # CMD ["rails", "server", "-b", "0.0.0.0"]

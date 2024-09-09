@@ -18,7 +18,7 @@ services:
       - "3000:5000"
     volumes:
       - .:/app
-    command: /app/startup.sh
+    # command: ["bash", "/app/startup.sh"]
     depends_on:
       - mysql
       - elasticsearch

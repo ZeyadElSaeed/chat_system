@@ -108,7 +108,7 @@ GEM
     elasticsearch-api (8.15.0)
       multi_json
     erubi (1.13.0)
-    faker (3.4.2)
+    faker (3.5.1)
       i18n (>= 1.8.11, < 2)
     faraday (2.11.0)
       faraday-net_http (>= 2.0, < 3.4)
@@ -118,7 +118,7 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
-    i18n (1.14.5)
+    i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     importmap-rails (2.0.1)
       actionpack (>= 6.0.0)
